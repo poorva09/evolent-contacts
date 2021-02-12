@@ -1,0 +1,59 @@
+<div>
+    <ng-container *ngIf="addMode || editMode">
+        <form [formGroup]="contactsForm" #contactForm (ngSubmit)="addContact(contactsForm, editIndex)">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input id="firstName" type="text" formControlName="firstName" class="form-control"> 
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" type="text" formControlName="lastName" class="form-control"> 
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="text" formControlName="email" class="form-control"> 
+            </div>
+            <div class="form-group">
+                <label for="ph">Phone Number</label>
+                <input id="ph" type="text" formControlName="phoneNumber" class="form-control"> 
+            </div>
+           
+            <button type="submit" class="btn btn-primary">{{btn}}</button>
+        </form>
+    </ng-container>
+    <ng-container *ngIf="!addMode && !editMode">
+    <table class="table" *ngIf="contacts.length > 0; else noContacts">
+        <thead>
+            <tr>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Email</td>
+                <td>Phone Number</td>
+                <td>Status</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contact of contacts; let i = index">
+                <td>{{contact.firstName}}</td>
+                <td>{{contact.lastName}}</td>
+                <td>{{contact.email}}</td>
+                <td>{{contact.phoneNumber}}</td>
+                <td [ngClass]="{active: contact.status == 'Active', inactive: contact.status == 'Inactive'}">{{contact.status}}</td>
+                <td><button [ngClass]="{inactive: contact.status == 'Active', active: contact.status == 'Inactive'}" (click)="changeStatus(i, contact.status)">{{contact.status == 'Active'?'Inactive': 'Active' }}</button></td>
+                <td><button (click)="editContact(i)">Edit</button></td>
+                <td><button (click)="delectContact(i)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ng-template #noContacts>
+        <div>
+            No Contacts
+        </div>
+    </ng-template>
+    <button (click)="addMode = true; btn = 'Add Contact'">Add New Contact</button>
+</ng-container>
+</div>
